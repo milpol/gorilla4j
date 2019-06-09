@@ -20,13 +20,15 @@ public class TSGTest
         tsg.put(startTime + 300 * 5, 1.5);
         tsg.put(startTime + 300 * 6, 2.1);
         tsg.put(startTime + 300 * 7, 2.2);
+        tsg.put(startTime + 300 * 8, 2.3);
+        tsg.close();
         //then
         final BitSet bitSet = tsg.getBitSet();
 //        System.out.println(bitSet.size());
 //        bitSet.stream()
 //                .mapToObj(Integer::toBinaryString)
 //                .forEach(System.out::print);
-        final TSGIterator tsgIterator = new TSGIterator(startTime, bitSet);
+        final TSGIterator tsgIterator = new TSGIterator(bitSet);
         for (int i = 0; i < 5; ++i) {
             System.out.println(tsgIterator.next());
         }

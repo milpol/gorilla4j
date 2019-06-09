@@ -25,6 +25,7 @@ public class TSG
         if (!finished) {
             bitSet.set(currentIndex, currentIndex + 36);
             currentIndex += 37;
+            skipBit();
             finished = true;
         }
     }

@@ -18,11 +18,10 @@ public class TSGIterator implements Iterator<DataPoint>
 
     private int currentIndex = 0;
 
-    public TSGIterator(final int timeStart,
-                       final BitSet bitSet)
+    public TSGIterator(final BitSet bitSet)
     {
-        this.timeStart = timeStart;
         this.bitSet = requireNonNull(bitSet);
+        this.timeStart = readInt();
     }
 
     @Override
@@ -120,9 +119,8 @@ public class TSGIterator implements Iterator<DataPoint>
     private long read(final int limit)
     {
         long value = 0L;
-        final int readTo = currentIndex + limit;
-        while (currentIndex < readTo) {
-            value += bitSet.get(currentIndex) ? (1L << currentIndex) : 0L;
+        for (int i = 0; i < limit; ++i) {
+            value += bitSet.get(currentIndex) ? (1L << i) : 0L;
             ++currentIndex;
         }
         return value;
