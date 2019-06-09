@@ -64,13 +64,13 @@ public class TSG
                 final int valueTrailingZeros = Long.numberOfTrailingZeros(valueDelta);
                 if (this.leading != 31 && valueLeadingZeros >= this.leading && valueTrailingZeros >= this.trailing) {
                     skipBit();
-                    write(valueDelta >> valueTrailingZeros, 64 - valueLeadingZeros - valueTrailingZeros);
+                    write(valueDelta >> this.trailing, 64 - this.leading - this.trailing);
                 } else {
                     leading = valueLeadingZeros;
-                    trailing = valueLeadingZeros;
+                    trailing = valueTrailingZeros;
                     flipBit();
                     write(leading, 5);
-                    int significantBits = 64 - valueLeadingZeros - valueTrailingZeros;
+                    int significantBits = 64 - leading - trailing;
                     write(significantBits, 6);
                     write(valueDelta >> trailing, significantBits);
                 }

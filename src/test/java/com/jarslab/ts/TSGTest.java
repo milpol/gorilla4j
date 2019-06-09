@@ -29,7 +29,7 @@ public class TSGTest
 //                .mapToObj(Integer::toBinaryString)
 //                .forEach(System.out::print);
         final TSGIterator tsgIterator = new TSGIterator(bitSet);
-        for (int i = 0; i < 5; ++i) {
+        for (int i = 0; i < 8; ++i) {
             System.out.println(tsgIterator.next());
         }
     }
