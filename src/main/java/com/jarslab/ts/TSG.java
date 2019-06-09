@@ -40,20 +40,33 @@ public class TSG
             writeLong(Double.doubleToLongBits(value));
         } else {
             int timeDelta = time - this.time;
-            int dod = this.timeDelta - timeDelta;
+            int dod = timeDelta - this.timeDelta;
             if (dod == 0) {
                 skipBit();
-            } else if (dod <= 128) {
-                write(0x02, 2);
+            } else if (-63 <= dod && dod <= 64) {
+//                write(0x02, 2); //TODO: Find smarter way to drop-in unsigned flags
+                flipBit();
+                skipBit();
                 write(dod, 7);
-            } else if (dod <= 512) {
-                write(0x06, 3);
+            } else if (-255 <= dod && dod <= 256) {
+//                write(0x06, 3);
+                flipBit();
+                flipBit();
+                skipBit();
                 write(dod, 9);
-            } else if (dod <= 4096) {
-                write(0x0e, 4);
+            } else if (-2047 <= dod && dod <= 2048) {
+//                write(0x0e, 4);
+                flipBit();
+                flipBit();
+                flipBit();
+                skipBit();
                 write(dod, 12);
             } else {
-                write(0x0f, 4);
+//                write(0x0f, 4);
+                flipBit();
+                flipBit();
+                flipBit();
+                flipBit();
                 write(dod, 32);
             }
 
