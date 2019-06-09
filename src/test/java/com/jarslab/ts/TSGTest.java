@@ -14,10 +14,10 @@ public class TSGTest
         final TSG tsg = new TSG(startTime);
         //when
         tsg.put(startTime + 300, 1.1);
-        tsg.put(startTime + 300 * 2, 1.2);
-        tsg.put(startTime + 300 * 3, 1.3);
-        tsg.put(startTime + 300 * 4, 1.4);
-        tsg.put(startTime + 300 * 5, 1.5);
+        tsg.put(startTime + 300 * 2, 1.1);
+        tsg.put(startTime + 300 * 3, 1.2);
+        tsg.put(startTime + 300 * 4, 1.3);
+        tsg.put(startTime + 300 * 5, 1.4);
         tsg.put(startTime + 300 * 6, 2.1);
         tsg.put(startTime + 300 * 7, 2.2);
         tsg.put(startTime + 300 * 8, 2.3);

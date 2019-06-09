@@ -41,7 +41,9 @@ public class TSG
         } else {
             int timeDelta = time - this.time;
             int dod = this.timeDelta - timeDelta;
-            if (dod <= 128) {
+            if (dod == 0) {
+                skipBit();
+            } else if (dod <= 128) {
                 write(0x02, 2);
                 write(dod, 7);
             } else if (dod <= 512) {
