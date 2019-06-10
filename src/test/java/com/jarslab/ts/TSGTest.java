@@ -11,7 +11,8 @@ public class TSGTest
     {
         //given
         final int startTime = 1560074400;
-        final TSG tsg = new TSG(startTime);
+        final OutBitSet outBitsSet = new OutBitSet();
+        final TSG tsg = new TSG(startTime, outBitsSet);
         //when
         tsg.put(startTime + 300, 1.1);
         tsg.put(startTime + 300 * 2, 1.1);
@@ -23,9 +24,9 @@ public class TSGTest
         tsg.put(startTime + 300 * 8, 2.3);
         tsg.close();
         //then
-        final BitSet bitSet = tsg.getBitSet();
-        final TSGIterator tsgIterator = new TSGIterator(bitSet);
-        for (int i = 0; i < 8; ++i) {
+        final BitSet bitSet = outBitsSet.copy();
+        final TSGIterator tsgIterator = new TSGIterator(new InBitSet(bitSet));
+        while (tsgIterator.hasNext()) {
             System.out.println(tsgIterator.next());
         }
     }
@@ -35,16 +36,17 @@ public class TSGTest
     {
         //given
         final int startTime = 1560074400;
-        final TSG tsg = new TSG(startTime);
+        final OutBitSet outBitsSet = new OutBitSet();
+        final TSG tsg = new TSG(startTime, outBitsSet);
         //when
-        tsg.put(startTime + 2000, 1.2);
-        tsg.put(startTime + 4050, 1.3);
-        tsg.put(startTime + 5012, 1.4);
+        tsg.put(startTime + 2000, 1.293);
+        tsg.put(startTime + 4050, 1.375);
+        tsg.put(startTime + 5012, 1.411);
         tsg.close();
         //then
-        final BitSet bitSet = tsg.getBitSet();
-        final TSGIterator tsgIterator = new TSGIterator(bitSet);
-        for (int i = 0; i < 3; ++i) {
+        final BitSet bitSet = outBitsSet.copy();
+        final TSGIterator tsgIterator = new TSGIterator(new InBitSet(bitSet));
+        while (tsgIterator.hasNext()) {
             System.out.println(tsgIterator.next());
         }
     }

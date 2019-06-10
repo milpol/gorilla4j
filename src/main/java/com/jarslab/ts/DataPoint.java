@@ -7,7 +7,8 @@ public class DataPoint
     private final int time;
     private final double value;
 
-    public DataPoint(final int time, final double value)
+    public DataPoint(final int time,
+                     final double value)
     {
         this.time = time;
         this.value = value;
