@@ -1,11 +1,14 @@
 package com.jarslab.ts;
 
+import java.nio.ByteBuffer;
+import java.util.BitSet;
+
 import static java.util.Objects.requireNonNull;
 
 public class TSG
 {
     private final int startTime;
-    private final OutBit<?> outBit;
+    private final OutBit outBit;
     private int time;
     private double value;
     private int timeDelta;
@@ -14,11 +17,34 @@ public class TSG
     private boolean finished;
 
     public TSG(final int startTime,
-               final OutBit<?> outBit)
+               final OutBit outBit)
     {
         this.startTime = startTime;
         this.outBit = requireNonNull(outBit);
         outBit.writeInt(startTime);
+    }
+
+    public static TSG fromBytes(final byte[] bytes)
+    {
+        final ByteBuffer byteBuffer = ByteBuffer.wrap(bytes);
+        final int startTime = byteBuffer.getInt();
+        final int time = byteBuffer.getInt();
+        final double value = byteBuffer.getDouble();
+        final int timeDelta = byteBuffer.getInt();
+        final int leading = byteBuffer.getInt();
+        final int trailing = byteBuffer.getInt();
+        final int position = byteBuffer.getInt();
+        byte[] bytesArray = new byte[byteBuffer.remaining()];
+        byteBuffer.get(bytesArray, 0, bytesArray.length);
+        final TSG tsg = new TSG(
+                startTime,
+                new OutBitSet(BitSet.valueOf(bytesArray), position));
+        tsg.time = time;
+        tsg.value = value;
+        tsg.timeDelta = timeDelta;
+        tsg.leading = leading;
+        tsg.trailing = trailing;
+        return tsg;
     }
 
     public synchronized void close()
@@ -47,6 +73,32 @@ public class TSG
             putTime(time);
             putValue(value);
         }
+    }
+
+    public synchronized byte[] toBytes()
+    {
+        if (finished) {
+            throw new IllegalStateException("Block already closed, dump data instead.");
+        }
+        return ByteUtils.concat(
+                ByteBuffer.allocate(32)
+                        .putInt(startTime)
+                        .putInt(time)
+                        .putDouble(value)
+                        .putInt(timeDelta)
+                        .putInt(leading)
+                        .putInt(trailing)
+                        .putInt(outBit.getSize())
+                        .array(),
+                outBit.toBytes());
+    }
+
+    public synchronized byte[] getDataBytes()
+    {
+        if (!finished) {
+            throw new IllegalStateException("Block not sealed yet.");
+        }
+        return outBit.toBytes();
     }
 
     private void putInitialPoint(final int time,

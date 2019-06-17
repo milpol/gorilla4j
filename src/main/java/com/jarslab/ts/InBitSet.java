@@ -4,10 +4,15 @@ import java.util.BitSet;
 
 import static java.util.Objects.requireNonNull;
 
-public class InBitSet implements InBit<BitSet>
+public class InBitSet implements InBit
 {
     private int position;
     private final BitSet bitSet;
+
+    public InBitSet(final byte[] bytes)
+    {
+        this(BitSet.valueOf(bytes));
+    }
 
     public InBitSet(final BitSet bitSet)
     {
@@ -31,11 +36,5 @@ public class InBitSet implements InBit<BitSet>
             ++position;
         }
         return value;
-    }
-
-    @Override
-    public BitSet copy()
-    {
-        return (BitSet) bitSet.clone();
     }
 }

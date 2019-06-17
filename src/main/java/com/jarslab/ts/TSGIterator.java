@@ -7,7 +7,7 @@ import static java.util.Objects.requireNonNull;
 
 public class TSGIterator implements Iterator<DataPoint>
 {
-    private final InBit<?> inBit;
+    private final InBit inBit;
     private int time;
     private double value;
     private int leading;
@@ -15,7 +15,7 @@ public class TSGIterator implements Iterator<DataPoint>
     private int timeDelta;
     private boolean finished;
 
-    public TSGIterator(final InBit<?> inBit)
+    public TSGIterator(final InBit inBit)
     {
         this.inBit = requireNonNull(inBit);
         final int timeStart = inBit.readInt();

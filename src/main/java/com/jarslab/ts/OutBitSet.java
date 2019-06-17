@@ -2,10 +2,24 @@ package com.jarslab.ts;
 
 import java.util.BitSet;
 
-public class OutBitSet implements OutBit<BitSet>
+import static java.util.Objects.requireNonNull;
+
+public class OutBitSet implements OutBit
 {
-    private final BitSet bitSet = new BitSet();
+    private final BitSet bitSet;
     private int position = 0;
+
+    public OutBitSet()
+    {
+        bitSet = new BitSet();
+    }
+
+    OutBitSet(final BitSet bitSet,
+              final int position)
+    {
+        this.bitSet = requireNonNull(bitSet);
+        this.position = position;
+    }
 
     @Override
     public void skipBit()
@@ -31,17 +45,11 @@ public class OutBitSet implements OutBit<BitSet>
     public void write(final long value, final int size)
     {
         for (int i = 0; i < size; ++i) {
-            if (getBit(value, i)) {
+            if (ByteUtils.getBit(value, i)) {
                 bitSet.set(position);
             }
             ++position;
         }
-    }
-
-    @Override
-    public BitSet copy()
-    {
-        return (BitSet) bitSet.clone();
     }
 
     @Override
@@ -50,8 +58,9 @@ public class OutBitSet implements OutBit<BitSet>
         return position;
     }
 
-    private boolean getBit(final long n, final int k)
+    @Override
+    public byte[] toBytes()
     {
-        return ((n >> k) & 1) == 1;
+        return bitSet.toByteArray();
     }
 }

@@ -1,6 +1,6 @@
 package com.jarslab.ts;
 
-public interface OutBit<T>
+public interface OutBit
 {
     void skipBit();
 
@@ -20,7 +20,7 @@ public interface OutBit<T>
         write(value, 64);
     }
 
-    T copy();
-
     int getSize();
+
+    byte[] toBytes();
 }

@@ -2,8 +2,6 @@ package com.jarslab.ts;
 
 import org.junit.Test;
 
-import java.util.BitSet;
-
 public class TSGTest
 {
     @Test
@@ -24,8 +22,34 @@ public class TSGTest
         tsg.put(startTime + 300 * 8, 2.3);
         tsg.close();
         //then
-        final BitSet bitSet = outBitsSet.copy();
-        final TSGIterator tsgIterator = new TSGIterator(new InBitSet(bitSet));
+        final TSGIterator tsgIterator = new TSGIterator(new InBitSet(tsg.getDataBytes()));
+        while (tsgIterator.hasNext()) {
+            System.out.println(tsgIterator.next());
+        }
+    }
+
+    @Test
+    public void shouldSerializeDeserializeTsg()
+    {
+        //given
+        final int startTime = 1560074400;
+        final OutBitSet outBitsSet = new OutBitSet();
+        final TSG tsg = new TSG(startTime, outBitsSet);
+        tsg.put(startTime + 300, 1.1);
+        tsg.put(startTime + 300 * 2, 1.1);
+        tsg.put(startTime + 300 * 3, 1.2);
+        tsg.put(startTime + 300 * 4, 1.3);
+        tsg.put(startTime + 300 * 5, 1.4);
+        tsg.put(startTime + 300 * 6, 2.1);
+        tsg.put(startTime + 300 * 7, 2.2);
+        tsg.put(startTime + 300 * 8, 2.3);
+        //when
+        final byte[] dump = tsg.toBytes();
+        final TSG tsgFromDump = TSG.fromBytes(dump);
+        tsgFromDump.put(startTime + 300 * 9, 2.4);
+        tsgFromDump.close();
+        final TSGIterator tsgIterator = new TSGIterator(new InBitSet(tsgFromDump.getDataBytes()));
+        //then
         while (tsgIterator.hasNext()) {
             System.out.println(tsgIterator.next());
         }
@@ -44,8 +68,7 @@ public class TSGTest
         tsg.put(startTime + 5012, 1.411);
         tsg.close();
         //then
-        final BitSet bitSet = outBitsSet.copy();
-        final TSGIterator tsgIterator = new TSGIterator(new InBitSet(bitSet));
+        final TSGIterator tsgIterator = new TSGIterator(new InBitSet(tsg.getDataBytes()));
         while (tsgIterator.hasNext()) {
             System.out.println(tsgIterator.next());
         }

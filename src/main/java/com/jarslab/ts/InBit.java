@@ -1,6 +1,6 @@
 package com.jarslab.ts;
 
-public interface InBit<T>
+public interface InBit
 {
     boolean read();
 
@@ -20,6 +20,4 @@ public interface InBit<T>
     }
 
     long read(int size);
-
-    T copy();
 }
