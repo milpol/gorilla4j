@@ -63,4 +63,10 @@ public class OutBitSet implements OutBit
     {
         return bitSet.toByteArray();
     }
+
+    @Override
+    public OutBit copy()
+    {
+        return new OutBitSet((BitSet) bitSet.clone(), position);
+    }
 }

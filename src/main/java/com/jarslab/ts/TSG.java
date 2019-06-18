@@ -14,7 +14,7 @@ public class TSG
     private int timeDelta;
     private int leading;
     private int trailing;
-    private boolean finished;
+    private boolean closed;
 
     public TSG(final int startTime,
                final OutBit outBit)
@@ -22,6 +22,14 @@ public class TSG
         this.startTime = startTime;
         this.outBit = requireNonNull(outBit);
         outBit.writeInt(startTime);
+    }
+
+    private TSG(final int startTime,
+                final OutBit outBit,
+                final boolean ignore)
+    {
+        this.startTime = startTime;
+        this.outBit = requireNonNull(outBit);
     }
 
     public static TSG fromBytes(final byte[] bytes)
@@ -38,7 +46,8 @@ public class TSG
         byteBuffer.get(bytesArray, 0, bytesArray.length);
         final TSG tsg = new TSG(
                 startTime,
-                new OutBitSet(BitSet.valueOf(bytesArray), position));
+                new OutBitSet(BitSet.valueOf(bytesArray), position),
+                false);
         tsg.time = time;
         tsg.value = value;
         tsg.timeDelta = timeDelta;
@@ -47,12 +56,23 @@ public class TSG
         return tsg;
     }
 
+    /**
+     * startTime = 1560074400
+     * outBit = {OutBitSet@758}
+     * time = 1560076800
+     * value = 2.3
+     * timeDelta = 300
+     * leading = 0
+     * trailing = 0
+     * closed = false
+     */
+
     public synchronized void close()
     {
-        if (!finished) {
+        if (!closed) {
             outBit.flipBits(36);
             outBit.skipBit();
-            finished = true;
+            closed = true;
         }
     }
 
@@ -64,20 +84,33 @@ public class TSG
     public synchronized void put(final int time,
                                  final double value)
     {
-        if (finished) {
+        if (closed) {
             throw new IllegalStateException("Block already closed.");
         }
         if (this.time == 0) {
+            if (time <= this.startTime) {
+                throw new IllegalArgumentException(
+                        String.format("Issued time: `%d` is out of block start time: `%d`.", time, startTime));
+            }
             putInitialPoint(time, value);
         } else {
+            if (time <= this.time) {
+                throw new IllegalArgumentException(
+                        String.format("Issued time: `%d` is before last inserted: `%d`.", time, this.time));
+            }
             putTime(time);
             putValue(value);
         }
     }
 
+    public synchronized boolean isClosed()
+    {
+        return closed;
+    }
+
     public synchronized byte[] toBytes()
     {
-        if (finished) {
+        if (closed) {
             throw new IllegalStateException("Block already closed, dump data instead.");
         }
         return ByteUtils.concat(
@@ -95,10 +128,22 @@ public class TSG
 
     public synchronized byte[] getDataBytes()
     {
-        if (!finished) {
+        if (!closed) {
             throw new IllegalStateException("Block not sealed yet.");
         }
         return outBit.toBytes();
+    }
+
+    public synchronized TSGIterator toIterator()
+    {
+        if (closed) {
+            return new TSGIterator(new InBitSet(outBit.copy().toBytes()));
+        } else {
+            final OutBit outBitCopy = outBit.copy();
+            outBitCopy.flipBits(36);
+            outBitCopy.skipBit();
+            return new TSGIterator(new InBitSet(outBitCopy.toBytes()));
+        }
     }
 
     private void putInitialPoint(final int time,

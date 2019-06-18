@@ -23,4 +23,6 @@ public interface OutBit
     int getSize();
 
     byte[] toBytes();
+
+    OutBit copy();
 }

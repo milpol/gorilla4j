@@ -44,11 +44,12 @@ public class TSGTest
         tsg.put(startTime + 300 * 7, 2.2);
         tsg.put(startTime + 300 * 8, 2.3);
         //when
-        final byte[] dump = tsg.toBytes();
-        final TSG tsgFromDump = TSG.fromBytes(dump);
-        tsgFromDump.put(startTime + 300 * 9, 2.4);
+        final TSG tsgFromDump = TSG.fromBytes(tsg.toBytes());
+        tsg.close();
+        tsgFromDump.put(startTime + 300 * 9, 3.1);
+        tsgFromDump.put(startTime + 300 * 10, 3.2);
         tsgFromDump.close();
-        final TSGIterator tsgIterator = new TSGIterator(new InBitSet(tsgFromDump.getDataBytes()));
+        final TSGIterator tsgIterator = tsgFromDump.toIterator();
         //then
         while (tsgIterator.hasNext()) {
             System.out.println(tsgIterator.next());

@@ -10,6 +10,9 @@ final class ByteUtils
 
     static boolean getBit(final long n, final int k)
     {
+        if (k >= 64) {
+            throw new IllegalArgumentException(String.format("Position `%d` out of long range.", k));
+        }
         return ((n >> k) & 1) == 1;
     }
 
