@@ -56,17 +56,6 @@ public class TSG
         return tsg;
     }
 
-    /**
-     * startTime = 1560074400
-     * outBit = {OutBitSet@758}
-     * time = 1560076800
-     * value = 2.3
-     * timeDelta = 300
-     * leading = 0
-     * trailing = 0
-     * closed = false
-     */
-
     public synchronized void close()
     {
         if (!closed) {
