@@ -77,13 +77,13 @@ public class TSG
             throw new IllegalStateException("Block already closed.");
         }
         if (this.time == 0) {
-            if (time <= this.startTime) {
+            if (time < this.startTime) {
                 throw new IllegalArgumentException(
                         String.format("Issued time: `%d` is out of block start time: `%d`.", time, startTime));
             }
             putInitialPoint(time, value);
         } else {
-            if (time <= this.time) {
+            if (time < this.time) {
                 throw new IllegalArgumentException(
                         String.format("Issued time: `%d` is before last inserted: `%d`.", time, this.time));
             }
