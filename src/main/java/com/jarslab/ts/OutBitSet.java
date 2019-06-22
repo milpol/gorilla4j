@@ -17,6 +17,10 @@ public class OutBitSet implements OutBit
     OutBitSet(final BitSet bitSet,
               final int position)
     {
+        if (position < 0) {
+            throw new IllegalArgumentException(
+                    String.format("Invalid position: `%d`.", position));
+        }
         this.bitSet = requireNonNull(bitSet);
         this.position = position;
     }

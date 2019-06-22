@@ -10,6 +10,10 @@ public class DataPoint
     public DataPoint(final int time,
                      final double value)
     {
+        if (time < 0) {
+            throw new IllegalArgumentException(
+                    String.format("Invalid time value `%d`.", time));
+        }
         this.time = time;
         this.value = value;
     }

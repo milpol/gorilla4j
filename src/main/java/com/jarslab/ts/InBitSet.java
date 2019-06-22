@@ -30,6 +30,10 @@ public class InBitSet implements InBit
     @Override
     public long read(final int size)
     {
+        if (size > 64) {
+            throw new IllegalArgumentException(
+                    String.format("Over long read: `%d`.", size));
+        }
         long value = 0L;
         for (int i = 0; i < size; ++i) {
             value += bitSet.get(position) ? (1L << i) : 0L;
