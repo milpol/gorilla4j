@@ -2,6 +2,7 @@ package com.jarslab.ts;
 
 import java.util.Iterator;
 import java.util.NoSuchElementException;
+import java.util.stream.DoubleStream;
 
 import static java.util.Objects.requireNonNull;
 
@@ -22,6 +23,8 @@ public class TSGIterator implements Iterator<DataPoint>
         this.timeDelta = inBit.readToInt(14);
         this.time = timeStart + timeDelta;
         this.value = Double.longBitsToDouble(inBit.readLong());
+        this.finished = DoubleStream.of(timeStart, timeDelta, time, value)
+                .allMatch(i -> i == 0);
     }
 
     @Override

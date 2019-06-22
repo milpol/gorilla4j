@@ -19,15 +19,10 @@ public class TSG
     public TSG(final int startTime,
                final OutBit outBit)
     {
-        this.startTime = startTime;
-        this.outBit = requireNonNull(outBit);
-        outBit.writeInt(startTime);
-    }
-
-    private TSG(final int startTime,
-                final OutBit outBit,
-                final boolean ignore)
-    {
+        if (startTime < 0) {
+            throw new IllegalArgumentException(
+                    String.format("Invalid time value `%d`.", startTime));
+        }
         this.startTime = startTime;
         this.outBit = requireNonNull(outBit);
     }
@@ -46,8 +41,7 @@ public class TSG
         byteBuffer.get(bytesArray, 0, bytesArray.length);
         final TSG tsg = new TSG(
                 startTime,
-                new OutBitSet(BitSet.valueOf(bytesArray), position),
-                false);
+                new OutBitSet(BitSet.valueOf(bytesArray), position));
         tsg.time = time;
         tsg.value = value;
         tsg.timeDelta = timeDelta;
@@ -138,6 +132,7 @@ public class TSG
     private void putInitialPoint(final int time,
                                  final double value)
     {
+        outBit.writeInt(startTime);
         this.time = time;
         this.value = value;
         timeDelta = time - startTime;
@@ -167,6 +162,7 @@ public class TSG
             outBit.flipBits(4);
             outBit.write(timeDeltaDelta, 32);
         }
+        this.timeDelta = timeDelta;
         this.time = time;
     }
 
