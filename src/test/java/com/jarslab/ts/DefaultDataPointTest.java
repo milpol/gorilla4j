@@ -8,7 +8,7 @@ import java.time.Instant;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class DataPointTest
+public class DefaultDataPointTest
 {
     @Rule
     public ExpectedException expectedException = ExpectedException.none();
@@ -19,7 +19,7 @@ public class DataPointTest
         //expect
         expectedException.expect(IllegalArgumentException.class);
         //when
-        new DataPoint(-1, 4.2);
+        new DefaultDataPoint(-1, 4.2);
     }
 
     @Test
@@ -29,8 +29,8 @@ public class DataPointTest
         final long time = Instant.now().getEpochSecond();
         final double value = 4.2;
         //when
-        final DataPoint dataPoint_1 = new DataPoint((int) time, value);
-        final DataPoint dataPoint_2 = new DataPoint((int) time, value);
+        final DataPoint dataPoint_1 = new DefaultDataPoint((int) time, value);
+        final DataPoint dataPoint_2 = new DefaultDataPoint((int) time, value);
         //then
         assertThat(dataPoint_1).isEqualTo(dataPoint_2);
     }

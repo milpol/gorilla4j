@@ -28,7 +28,7 @@ public class TSGIntegrationTests
         for (int i = 0; i < 1440; i++) {
             samplingTime += 60;
             assertThat(tsgIterator.next())
-                    .isEqualTo(new DataPoint(samplingTime, i / 100));
+                    .isEqualTo(new DefaultDataPoint(samplingTime, i / 100));
         }
         assertThat(tsgIterator.hasNext()).isFalse();
     }
@@ -41,7 +41,7 @@ public class TSGIntegrationTests
         int samplingTime = TSGTest.START_TIME;
         for (int i = 0; i < 50; i++) {
             samplingTime += ThreadLocalRandom.current().nextInt(0, (i + 1) * 10);
-            dataPoints.add(new DataPoint(samplingTime, ThreadLocalRandom.current().nextDouble(100)));
+            dataPoints.add(new DefaultDataPoint(samplingTime, ThreadLocalRandom.current().nextDouble(100)));
         }
         final TSG tsg = new TSG(TSGTest.START_TIME, new OutBitSet());
         //when
@@ -61,7 +61,7 @@ public class TSGIntegrationTests
         int samplingTime = TSGTest.START_TIME;
         for (int i = 0; i < 50; i++) {
             samplingTime++;
-            dataPoints.add(new DataPoint(samplingTime, i));
+            dataPoints.add(new DefaultDataPoint(samplingTime, i));
         }
         final TSG tsg = new TSG(TSGTest.START_TIME, new OutBitSet());
         //when
@@ -81,7 +81,7 @@ public class TSGIntegrationTests
         int samplingTime = TSGTest.START_TIME;
         for (int i = 0; i < 50; i++) {
             samplingTime += 100 * ThreadLocalRandom.current().nextInt(0, (i + 1) * 100);
-            dataPoints.add(new DataPoint(samplingTime, i % 2 == 0 ? Integer.MAX_VALUE : i));
+            dataPoints.add(new DefaultDataPoint(samplingTime, i % 2 == 0 ? Integer.MAX_VALUE : i));
         }
         final TSG tsg = new TSG(TSGTest.START_TIME, new OutBitSet());
         //when

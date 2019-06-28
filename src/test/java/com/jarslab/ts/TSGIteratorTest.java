@@ -47,6 +47,6 @@ public class TSGIteratorTest
         assertThat(firstNext).isTrue();
         assertThat(closedNext).isFalse();
         assertThat(closedNext_2).isFalse();
-        assertThat(dataPoint).isEqualTo(new DataPoint(TSGTest.START_TIME, 4.2));
+        assertThat(dataPoint).isEqualTo(new DefaultDataPoint(TSGTest.START_TIME, 4.2));
     }
 }

@@ -39,7 +39,7 @@ public class TSGIterator implements Iterator<DataPoint>
         if (finished) {
             throw new NoSuchElementException();
         } else {
-            final DataPoint dataPoint = new DataPoint(time, value);
+            final DataPoint dataPoint = new DefaultDataPoint(time, value);
             nextAdvance();
             return dataPoint;
         }

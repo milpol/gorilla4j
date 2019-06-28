@@ -60,7 +60,7 @@ public class TSGTest
     {
         //given
         final TSG tsg = new TSG(START_TIME, new OutBitSet());
-        final DataPoint dataPoint = new DataPoint(START_TIME + 5, 4.2);
+        final DataPoint dataPoint = new DefaultDataPoint(START_TIME + 5, 4.2);
         //when
         tsg.put(dataPoint);
         //then
@@ -72,8 +72,8 @@ public class TSGTest
     {
         //given
         final TSG tsg = new TSG(START_TIME, new OutBitSet());
-        final DataPoint dataPoint_1 = new DataPoint(START_TIME + 5, 4.2);
-        final DataPoint dataPoint_2 = new DataPoint(START_TIME + 10, 4.3);
+        final DataPoint dataPoint_1 = new DefaultDataPoint(START_TIME + 5, 4.2);
+        final DataPoint dataPoint_2 = new DefaultDataPoint(START_TIME + 10, 4.3);
         //when
         tsg.put(dataPoint_1);
         tsg.put(dataPoint_2);
@@ -89,7 +89,7 @@ public class TSGTest
     {
         //given
         final TSG tsg = new TSG(START_TIME, new OutBitSet());
-        final DataPoint dataPoint = new DataPoint(START_TIME + 5, 4.2);
+        final DataPoint dataPoint = new DefaultDataPoint(START_TIME + 5, 4.2);
         //when
         tsg.put(START_TIME + 5, 4.2);
         //then
@@ -102,7 +102,7 @@ public class TSGTest
         //given
         final TSG tsg = new TSG(START_TIME, new OutBitSet());
         tsg.close();
-        final DataPoint dataPoint = new DataPoint(START_TIME + 5, 4.2);
+        final DataPoint dataPoint = new DefaultDataPoint(START_TIME + 5, 4.2);
         //expect
         expectedException.expect(IllegalStateException.class);
         //when
@@ -114,7 +114,7 @@ public class TSGTest
     {
         //given
         final TSG tsg = new TSG(START_TIME, new OutBitSet());
-        final DataPoint dataPoint = new DataPoint(START_TIME + 5, 4.2);
+        final DataPoint dataPoint = new DefaultDataPoint(START_TIME + 5, 4.2);
         tsg.put(dataPoint);
         final byte[] tsgBytes = tsg.toBytes();
         //when
