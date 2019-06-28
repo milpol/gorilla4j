@@ -9,7 +9,7 @@ import static java.util.Objects.requireNonNull;
 public class TSGIterator implements Iterator<DataPoint>
 {
     private final InBit inBit;
-    private int time;
+    private long time;
     private double value;
     private int leading;
     private int trailing;
@@ -19,7 +19,7 @@ public class TSGIterator implements Iterator<DataPoint>
     public TSGIterator(final InBit inBit)
     {
         this.inBit = requireNonNull(inBit);
-        final int timeStart = inBit.readInt();
+        final long timeStart = inBit.readLong();
         this.timeDelta = inBit.readToInt(14);
         this.time = timeStart + timeDelta;
         this.value = Double.longBitsToDouble(inBit.readLong());

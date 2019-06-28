@@ -2,7 +2,7 @@ package com.jarslab.ts;
 
 public interface DataPoint
 {
-    int getTime();
+    long getTime();
 
     double getValue();
 }

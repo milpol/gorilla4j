@@ -4,10 +4,10 @@ import java.util.Objects;
 
 public class DefaultDataPoint implements DataPoint
 {
-    private final int time;
+    private final long time;
     private final double value;
 
-    public DefaultDataPoint(final int time,
+    public DefaultDataPoint(final long time,
                             final double value)
     {
         if (time < 0) {
@@ -19,7 +19,7 @@ public class DefaultDataPoint implements DataPoint
     }
 
     @Override
-    public int getTime()
+    public long getTime()
     {
         return time;
     }

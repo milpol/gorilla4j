@@ -29,8 +29,8 @@ public class DefaultDataPointTest
         final long time = Instant.now().getEpochSecond();
         final double value = 4.2;
         //when
-        final DataPoint dataPoint_1 = new DefaultDataPoint((int) time, value);
-        final DataPoint dataPoint_2 = new DefaultDataPoint((int) time, value);
+        final DataPoint dataPoint_1 = new DefaultDataPoint(time, value);
+        final DataPoint dataPoint_2 = new DefaultDataPoint(time, value);
         //then
         assertThat(dataPoint_1).isEqualTo(dataPoint_2);
     }

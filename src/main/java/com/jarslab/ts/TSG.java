@@ -7,16 +7,21 @@ import static java.util.Objects.requireNonNull;
 
 public class TSG
 {
-    private final int startTime;
+    private final long startTime;
     private final OutBit outBit;
-    private int time;
+    private long time;
     private double value;
     private int timeDelta;
     private int leading;
     private int trailing;
     private boolean closed;
 
-    public TSG(final int startTime,
+    public TSG(final long startTime)
+    {
+        this(startTime, new OutBitSet());
+    }
+
+    public TSG(final long startTime,
                final OutBit outBit)
     {
         if (startTime < 0) {
@@ -30,8 +35,8 @@ public class TSG
     public static TSG fromBytes(final byte[] bytes)
     {
         final ByteBuffer byteBuffer = ByteBuffer.wrap(bytes);
-        final int startTime = byteBuffer.getInt();
-        final int time = byteBuffer.getInt();
+        final long startTime = byteBuffer.getLong();
+        final long time = byteBuffer.getLong();
         final double value = byteBuffer.getDouble();
         final int timeDelta = byteBuffer.getInt();
         final int leading = byteBuffer.getInt();
@@ -64,7 +69,7 @@ public class TSG
         put(dataPoint.getTime(), dataPoint.getValue());
     }
 
-    public synchronized void put(final int time,
+    public synchronized void put(final long time,
                                  final double value)
     {
         if (closed) {
@@ -97,9 +102,9 @@ public class TSG
             throw new IllegalStateException("Block already closed, dump data instead.");
         }
         return ByteUtils.concat(
-                ByteBuffer.allocate(32)
-                        .putInt(startTime)
-                        .putInt(time)
+                ByteBuffer.allocate(40)
+                        .putLong(startTime)
+                        .putLong(time)
                         .putDouble(value)
                         .putInt(timeDelta)
                         .putInt(leading)
@@ -129,20 +134,20 @@ public class TSG
         }
     }
 
-    private void putInitialPoint(final int time,
+    private void putInitialPoint(final long time,
                                  final double value)
     {
-        outBit.writeInt(startTime);
+        outBit.writeLong(startTime);
         this.time = time;
         this.value = value;
-        timeDelta = time - startTime;
+        timeDelta = (int) (time - startTime);
         outBit.write(timeDelta, 14);
         outBit.writeLong(Double.doubleToLongBits(value));
     }
 
-    private void putTime(final int time)
+    private void putTime(final long time)
     {
-        int timeDelta = time - this.time;
+        int timeDelta = (int) (time - this.time);
         int timeDeltaDelta = timeDelta - this.timeDelta;
         if (timeDeltaDelta == 0) {
             outBit.skipBit();

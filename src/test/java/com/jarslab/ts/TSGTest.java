@@ -8,7 +8,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 public class TSGTest
 {
-    static final int START_TIME = 1546300800;
+    static final long START_TIME = 1546300800;
 
     @Rule
     public ExpectedException expectedException = ExpectedException.none();

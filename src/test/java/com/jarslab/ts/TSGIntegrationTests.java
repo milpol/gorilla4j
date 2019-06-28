@@ -16,7 +16,7 @@ public class TSGIntegrationTests
         //given
         final TSG tsg = new TSG(TSGTest.START_TIME, new OutBitSet());
         //when
-        int samplingTime = TSGTest.START_TIME;
+        long samplingTime = TSGTest.START_TIME;
         for (int i = 0; i < 1440; i++) {
             samplingTime += 60;
             tsg.put(samplingTime, i / 100);
@@ -38,7 +38,7 @@ public class TSGIntegrationTests
     {
         //given
         final List<DataPoint> dataPoints = new ArrayList<>();
-        int samplingTime = TSGTest.START_TIME;
+        long samplingTime = TSGTest.START_TIME;
         for (int i = 0; i < 50; i++) {
             samplingTime += ThreadLocalRandom.current().nextInt(0, (i + 1) * 10);
             dataPoints.add(new DefaultDataPoint(samplingTime, ThreadLocalRandom.current().nextDouble(100)));
@@ -58,7 +58,7 @@ public class TSGIntegrationTests
     {
         //given
         final List<DataPoint> dataPoints = new ArrayList<>();
-        int samplingTime = TSGTest.START_TIME;
+        long samplingTime = TSGTest.START_TIME;
         for (int i = 0; i < 50; i++) {
             samplingTime++;
             dataPoints.add(new DefaultDataPoint(samplingTime, i));
@@ -78,7 +78,7 @@ public class TSGIntegrationTests
     {
         //given
         final List<DataPoint> dataPoints = new ArrayList<>();
-        int samplingTime = TSGTest.START_TIME;
+        long samplingTime = TSGTest.START_TIME;
         for (int i = 0; i < 50; i++) {
             samplingTime += 100 * ThreadLocalRandom.current().nextInt(0, (i + 1) * 100);
             dataPoints.add(new DefaultDataPoint(samplingTime, i % 2 == 0 ? Integer.MAX_VALUE : i));
