@@ -1,5 +1,6 @@
 package com.jarslab.ts;
 
+import java.nio.BufferOverflowException;
 import java.nio.ByteBuffer;
 import java.util.BitSet;
 
@@ -16,11 +17,26 @@ public class TSG
     private int trailing;
     private boolean closed;
 
+    /**
+     * Create new TSG block for given start time.
+     *
+     * @param startTime block start time (epoch)
+     * @throws IllegalArgumentException if given start time is below zero
+     */
     public TSG(final long startTime)
     {
         this(startTime, new OutBitSet());
     }
 
+    /**
+     * Create new TSG block for given start time and OutBit storage.
+     * Use this constructor in case of custom OutBit implementations.
+     *
+     * @param startTime block start time
+     * @param outBit    output bit storage
+     * @throws IllegalArgumentException if given start time is below zero
+     * @throws NullPointerException     for null OutBit
+     */
     public TSG(final long startTime,
                final OutBit outBit)
     {
@@ -32,6 +48,13 @@ public class TSG
         this.outBit = requireNonNull(outBit);
     }
 
+    /**
+     * Create TSG block from dump (bytes).
+     *
+     * @param bytes TSG dump in bytes
+     * @return TSG block created from given bytes
+     * @throws BufferOverflowException for invalid bytes provided
+     */
     public static TSG fromBytes(final byte[] bytes)
     {
         final ByteBuffer byteBuffer = ByteBuffer.wrap(bytes);
@@ -55,6 +78,11 @@ public class TSG
         return tsg;
     }
 
+    /**
+     * Close current TSG block.
+     * After this point no more points are accepted,
+     * and bytes dump can be done via the <code>TSG::getDataBytes</code> method only.
+     */
     public synchronized void close()
     {
         if (!closed) {
@@ -64,11 +92,24 @@ public class TSG
         }
     }
 
+    /**
+     * Append <code>DataPoint</code> to current block.
+     *
+     * @param dataPoint value in time container
+     * @throws IllegalArgumentException if given time is misplaced for TSG start time or last inserted time
+     */
     public synchronized void put(final DataPoint dataPoint)
     {
         put(dataPoint.getTime(), dataPoint.getValue());
     }
 
+    /**
+     * Append time and value to current block.
+     *
+     * @param time  given time
+     * @param value given value
+     * @throws IllegalArgumentException if given time is misplaced for TSG start time or last inserted time
+     */
     public synchronized void put(final long time,
                                  final double value)
     {
@@ -91,11 +132,24 @@ public class TSG
         }
     }
 
+    /**
+     * Check if the current block is closed.
+     *
+     * @return indication whether given block was closed
+     */
     public synchronized boolean isClosed()
     {
         return closed;
     }
 
+    /**
+     * Create the current TSG block dump in open state.
+     * Closed block cannot be exported with state,
+     * only by its content by the <code>TSG::getDataBytes</code> method.
+     *
+     * @return TSG dump
+     * @throws IllegalStateException if block was already closed
+     */
     public synchronized byte[] toBytes()
     {
         if (closed) {
@@ -114,6 +168,14 @@ public class TSG
                 outBit.toBytes());
     }
 
+    /**
+     * Create current TSG data dump.
+     * This method can be called on closed block only.
+     * Open block sne
+     *
+     * @return TSG data dump
+     * @throws IllegalStateException if block was not yet closed
+     */
     public synchronized byte[] getDataBytes()
     {
         if (!closed) {
@@ -122,6 +184,13 @@ public class TSG
         return outBit.toBytes();
     }
 
+    /**
+     * Create Iterator of current TSG block.
+     * Created Iterator operates on copied OutBit bits.
+     * Iterator can be created from both opened and closed block of TSG.
+     *
+     * @return Iterator of current TSG block
+     */
     public synchronized TSGIterator toIterator()
     {
         if (closed) {

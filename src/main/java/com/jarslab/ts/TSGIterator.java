@@ -6,6 +6,9 @@ import java.util.stream.DoubleStream;
 
 import static java.util.Objects.requireNonNull;
 
+/**
+ * TSG block data viewer in the form of <code>DataPoint</code> iterator.
+ */
 public class TSGIterator implements Iterator<DataPoint>
 {
     private final InBit inBit;
@@ -16,6 +19,12 @@ public class TSGIterator implements Iterator<DataPoint>
     private int timeDelta;
     private boolean finished;
 
+    /**
+     * Create TSG iterator from given InBit TSG bits.
+     *
+     * @param inBit TSG data dump wrapped in InBit abstraction
+     * @throws NullPointerException for null InBit
+     */
     public TSGIterator(final InBit inBit)
     {
         this.inBit = requireNonNull(inBit);
@@ -27,12 +36,18 @@ public class TSGIterator implements Iterator<DataPoint>
                 .allMatch(i -> i == 0);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public boolean hasNext()
     {
         return !finished;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public DataPoint next()
     {
