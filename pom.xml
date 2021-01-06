@@ -28,7 +28,7 @@
     </developers>
 
     <properties>
-        <java.release>1.8</java.release>
+        <java.release>11</java.release>
         <junit.version>4.13.1</junit.version>
         <assertj.version>3.18.1</assertj.version>
         <maven-compiler-plugin.version>3.8.0</maven-compiler-plugin.version>
