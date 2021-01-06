@@ -4,7 +4,7 @@
     <groupId>com.jarslab.ts</groupId>
     <artifactId>gorilla4j</artifactId>
     <packaging>jar</packaging>
-    <version>0.4-SNAPSHOT</version>
+    <version>0.3</version>
     <name>gorilla4j</name>
     <description>Implementation of time series compression method based on the Facebook Gorilla paper</description>
     <url>https://github.com/milpol/gorilla4j</url>
@@ -145,7 +145,7 @@
         <connection>scm:git:git@github.com:milpol/gorilla4j.git</connection>
         <developerConnection>scm:git:git@github.com:milpol/gorilla4j.git</developerConnection>
         <url>https://github.com/milpol/gorilla4j</url>
-        <tag>HEAD</tag>
+        <tag>gorilla4j-0.3</tag>
     </scm>
 
     <issueManagement>
