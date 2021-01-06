@@ -65,6 +65,8 @@ Iterator<DataPoint> tsgIterator = new TSGIterator(new InBitSet(tsgBytes));
 Please check excellent [Michael Burman](https://github.com/burmanm) implementation: [gorilla-tsc](https://github.com/burmanm/gorilla-tsc). 
 
 # Changelog
+## 0.3
+* Bump test libs
 ## 0.2
 * Use `long` for time values (start and current).
 * Move `DataPoint` to abstraction
