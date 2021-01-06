@@ -28,7 +28,7 @@ All answers and technical guts can be found in great paper from the Facebook eng
 <dependency>
   <groupId>com.jarslab.ts</groupId>
   <artifactId>gorilla4j</artifactId>
-  <version>0.2</version>
+  <version>0.4</version>
 </dependency>
 ```
 ## Examples
@@ -65,7 +65,7 @@ Iterator<DataPoint> tsgIterator = new TSGIterator(new InBitSet(tsgBytes));
 Please check excellent [Michael Burman](https://github.com/burmanm) implementation: [gorilla-tsc](https://github.com/burmanm/gorilla-tsc). 
 
 # Changelog
-## 0.3
+## 0.4
 * Bump test libs
 ## 0.2
 * Use `long` for time values (start and current).
